@@ -1,0 +1,195 @@
+\chapter{Messages Reference}
+\section{Introduction} 
+In this chapter, we document all Mavlink messages, which have a corresponding MSP message.
+As a noticed there are way more MAvlink messages that have no corresponding MSP message.
+We mapped messages on the table as Following.
+\begin{itemize}
+  \item For every Mavlink message, we started with the message name and number and description.
+  \item We wrote Mavlink message field name and type in a comma-separated for instance system\_status,u8 this means the field part of the message is system\_status and the data type representing it is unsigned int 8 bits.
+  \item  We mapped the corresponding MSP message which does the same functionality with the message name,Message-ID, Field name(data), and Field type.   
+\end{itemize}
+
+
+\subsection{Compatibility  Matrix \\} 
+Messages were highlighted with the following colors as an indication of the compatibility between Mavlink and MSP
+\begin{itemize}
+  \item Green: this means the messages on both protocol are fully compatibile.    
+  \item Light Grey: This means they are partially compatible however there are differences in both protocols, for instance, the data type in one protocol is int with 8 bits and unsigned int on the other.
+  \item Yellow: This means there is no compatibility between the messages for example we didn't find an MSP message that corresponds to this particular message on Mavlink. 
+\end{itemize}
+\cleardoublepage
+
+\section{Messages Reference}
+
+\subsection{HeartBeat 0} 
+
+The heartbeat message shows that a system or component is present and responding. The type and autopilot fields (along with the message component id), allow the receiving system to treat further messages from this system appropriately (e.g. by laying out the user interface based on the autopilot).  \\
+
+{\rowcolors{2}{green!80!yellow!50}{green!80!yellow!50}
+\centering
+\begin{tabular}{ |p{4cm} |p{7cm} | p{2cm}|m{5em}|}
+\hline
+Mavlink Message Field(Name,type)&Corresponding MSP Message(Name,id,data,type)& Compatibility & Notes\\
+\hline
+type,u8 & MSP\_IDENT,100,MULTITYPE,u8  & Yes & - \\
+\hline
+\rowcolor{yellow}
+autopilot & Not Found & No& -\\
+\hline
+\rowcolor{yellow}
+base\_mode,u8 & No Found & No  & -  \\
+\hline
+\rowcolor{yellow}
+custom\_mode,u32& Not Found & No & - \\
+\hline
+\rowcolor{yellow}
+system\_status,u8 & Not Found & No & - \\
+\hline
+mavlink\_version,u8& MSP\_IDENT,100,MSP\_VERSION,u8  & Yes & - \\
+\end{tabular}
+}
+\cleardoublepage
+
+
+\subsection{SYS\_STATUS 1} 
+The general system state. If the system is following the MAVLink standard, the system state is mainly defined by three orthogonal states/modes: The system mode, which is either LOCKED (motors shut down and locked), MANUAL (system under RC control), GUIDED (system with autonomous position control, position setpoint controlled manually) or AUTO (system guided by path/waypoint planner). The NAV\_MODE defined the current flight state: LIFTOFF (often an open-loop maneuver), LANDING, WAYPOINTS or VECTOR. This represents the internal navigation state machine. The system status shows whether the system is currently active or not and if an emergency occurred. During the CRITICAL and EMERGENCY states the MAV is still considered to be active, but should start emergency procedures autonomously. After a failure occurred it should first move from active to critical to allow manual intervention and then move to emergency after a certain timeout. \\
+
+{\rowcolors{2}{yellow}{yellow}
+\centering
+\begin{tabular}{ |p{4cm} |p{7cm} | p{2cm}|m{5em}|}
+\hline
+Mavlink Message Field(Name,type)&Corresponding MSP Message(Name,id,data,type)& Compatibility & Notes\\
+\hline
+onboard\_control\_sensors\_present,u32 & Not Found & No & - \\
+\hline
+\hline
+onboard\_control\_sensors\_enabled,u32 & Not Found & No & - \\
+\hline
+onboard\_control\_sensors\_health,u32 & Not Found & No & - \\
+\hline
+load,u16 & Not Found & No & - \\
+\hline
+\rowcolor{lightgray}
+voltage\_battery,u16 & MSP\_ANALOG,110,vbat,u8 & Partially &  Mavlink u16 ,unit is mv MSP u8, unit 0.1 volt  \\
+\rowcolor{lightgray}
+\hline
+current\_battery,i16 &  MSP\_ANALOG,110,amperage,u16 & Partially & Mavlink i16 MSP u16 \\
+\hline
+\rowcolor{lightgray}
+battery\_remaining,i8 & MSP\_MISC,114,conf.vbatscale,u8 & Partially &  Mavlink i8, MSP u8  \\
+\hline
+drop\_rate\_comm,u16 & Not Found & No & - \\
+\hline
+\rowcolor{green}
+errors\_comm,u16 & MSP\_STATUS,101, i2c\_errors\_count,u16 & Yes &  - \\
+\hline
+errors\_count1,u16 & Not Found & No & - \\
+\hline
+errors\_count2,u16 & Not Found & No & - \\
+\hline
+errors\_count3,u16 & Not Found & No & - \\
+\hline
+errors\_count4,u16 & Not Found & No & - \\
+
+\end{tabular}
+}
+\cleardoublepage
+
+
+
+\subsection{GPS\_RAW\_INT 24} 
+The global position, as returned by the Global Positioning System (GPS). This is NOT the global position estimate of the system, but rather a RAW sensor value. See message GLOBAL\_POSITION for the global position estimate. \\ 
+
+{\rowcolors{2}{yellow}{yellow}
+\centering
+\begin{tabular}{ |p{4cm  } |p{7cm} | p{2cm}|m{5em}|}
+\hline
+Mavlink Message Field(Name,type)&Corresponding MSP Message(Name,id,data,type)& Compatibility & Notes\\
+\hline
+time\_usec,u32 & Not Found & No & - \\
+\hline
+port,u8 & Not Found & No & - \\
+\rowcolor{green}
+\hline
+fix\_type,u8 & GPS\_FIX,106,GPS\_FIX,u8 & Yes  & - \\
+\rowcolor{lightgray}
+\hline
+lat,i32 &  	GPS\_coord[LAT],106,GPS\_FIX,u32 & Partially   & Mavlink i32, MSP u32\\
+\rowcolor{lightgray}
+\hline
+long,i32 &  	GPS\_coord[LON],106,GPS\_FIX,u32 & Partially   & Mavlink i32, MSP u32\\
+\rowcolor{lightgray}
+\hline
+alt,i32 &  	GPS\_altitude,106,GPS\_FIX,u16 & Partially   & Mavlink i32, MSP u16\\
+\hline
+\rowcolor{green}
+eph,u16 & MSP\_GPSSTATISTICS,-,eph,u16 & Yes & - \\
+\hline
+\rowcolor{green}
+epv,u16 & MSP\_GPSSTATISTICS,-,eph,u16 & Yes & - \\
+\rowcolor{green}
+\hline
+vel,u16 & GPS\_altitude,106,GPS\_speed,u16 & Yes   & - \\
+\hline
+cog,u16 & Not Found & No & - \\
+\hline
+\rowcolor{green}
+satellites\_visible,u8 & MSP\_RAW\_GPS,106,GPS\_numSat,u8& Yes & - \\
+\hline
+cog,u16 & Not Found & No & - \\
+\end{tabular}
+}
+
+\cleardoublepage
+
+
+
+
+
+\subsection{RAW\_IMU 27} 
+The RAW IMU readings for a 9DOF sensor, which is identified by the id (default IMU1). This message should always contain the true raw values without any scaling to allow data capture and system debugging. \\
+
+{\rowcolors{2}{yellow}{yellow}
+\centering
+\begin{tabular}{ |p{4cm  } |p{7cm} | p{2cm}|m{5em}|}
+\hline
+Mavlink Message Field(Name,type)&Corresponding MSP Message(Name,id,data,type)& Compatibility & Notes\\
+\hline
+time\_usec,u64 & Not Found & No & - \\
+\hline
+\rowcolor{green}
+xacc,i16 &MSP\_RAW\_IMU,102,accx,i16& Yes & - \\
+\hline
+\rowcolor{green}
+yacc,i16 &MSP\_RAW\_IMU,102,accy,i16& Yes & - \\
+\hline
+\rowcolor{green}
+zacc,i16 &MSP\_RAW\_IMU,102,accz,i16& Yes & - \\
+\hline
+\rowcolor{green}
+xgyro,i16 &MSP\_RAW\_IMU,102,gyrx,i16& Yes & - \\
+\hline
+\rowcolor{green}
+ygyro,i16 &MSP\_RAW\_IMU,102,gyry,i16& Yes & - \\
+\hline
+\rowcolor{green}
+zgyro,i16 &MSP\_RAW\_IMU,102,gyrz,i16& Yes & - \\
+\hline
+\rowcolor{green}
+xmag,i16 &MSP\_RAW\_IMU,102,magx,i16& Yes & - \\
+\hline
+\rowcolor{green}
+ymag,i16 &MSP\_RAW\_IMU,102,magy,i16& Yes & - \\
+\hline
+\rowcolor{green}
+zmag,i16 &MSP\_RAW\_IMU,102,magz,i16& Yes & - \\
+\hline
+id,u8 & Not Found & No & - \\
+\hline
+temperature,i16 & Not Found & No & - \\
+
+\end{tabular}
+}
+
+\cleardoublepage
+
