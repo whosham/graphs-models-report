@@ -28,6 +28,52 @@ yaw,f & MSP\_ATTITUDE,108,heading,i16& Partially & Mavlink uses f and unit is ra
 
 
 
+\subsection{RC\_CHANNELS\_RAW 35} 
+The RAW values of the RC channels received. The standard PPM modulation is as follows: 1000 microseconds: 0\%, 2000 microseconds: 100\%. A value of UINT16\_MAX implies the channel is unused. Individual receivers/transmitters might violate this specification.\\
+
+{\rowcolors{2}{yellow}{yellow}
+\centering
+\begin{tabular}{ |p{4cm  } |p{7cm} | p{2cm}|m{5em}|}
+\hline
+Mavlink Message Field(Name,type)&Corresponding MSP Message(Name,id,data,type)& Compatibility & Notes\\
+\hline
+time\_boot\_ms,u32 & Not Found & No & - \\
+\hline
+port,u8 & Not Found & No & - \\
+\rowcolor{green}
+\hline
+chan1\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS],[u16;16]& Yes  & - \\
+\rowcolor{green}
+\hline
+chan2\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS],[u16;16]& Yes  & - \\
+\rowcolor{green}
+\hline
+chan3\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS],[u16;16]& Yes  & - \\
+\rowcolor{green}
+\hline
+chan4\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS],[u16;16]& Yes  & - \\
+\rowcolor{green}
+\hline
+chan5\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS],[u16;16]& Yes  & - \\
+\rowcolor{green}
+\hline
+chan6\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS],[u16;16]& Yes  & - \\
+\rowcolor{green}
+\hline
+chan7\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS],[u16;16]& Yes  & - \\
+\rowcolor{green}
+\hline
+chan8\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS],[u16;16]& Yes  & - \\
+\rowcolor{lightgray}
+\hline
+rssi,u8 & MSP\_ANALOG,110,rssi,u16& Partially  & Mavlink u8 MSP u16 \\
+
+\end{tabular}
+}
+
+\cleardoublepage
+
+
 
 
 
@@ -139,6 +185,31 @@ seq,u16 & MSP\_WP,118,wp\_no,u8& Partially  & Mavlink u16, MSP u8  \\
 
 
 
+\subsection{SET\_GPS\_GLOBAL\_ORIGIN 48} 
+Sets the GPS co-ordinates of the vehicle local origin (0,0,0) position. Vehicle should emit GPS\_GLOBAL\_ORIGIN irrespective of whether the origin is changed. This enables transform between the local coordinate frame and the global (GPS) coordinate frame, which may be necessary when (for example) indoor and outdoor settings are connected and the MAV should move from in- to outdoor. \\
+
+{\rowcolors{2}{yellow}{yellow}
+\centering
+\begin{tabular}{ |p{4cm  } |p{7cm} | p{2cm}|m{5em}|}
+\hline
+Mavlink Message Field(Name,type)&Corresponding MSP Message(Name,id,data,type)& Compatibility & Notes\\
+\hline
+target\_system,u8 & Not Found & No & - \\
+\hline
+\rowcolor{lightgray}
+latitude,i32 & MSP\_SET\_RAW\_GPS,201,lat,u32 & Partially & Mavlink i32 MSP u32 \\
+\hline
+\rowcolor{lightgray}
+longitude,i32 & MSP\_SET\_RAW\_GPS,201,lon,u32& Partially &Mavlink i32 MSP u32 \\
+\hline
+\rowcolor{lightgray}
+altitude,i32 & MSP\_SET\_RAW\_GPS,201,alt,u32 & Partially & Mavlink i32 MSP u32 \\
+\hline
+time\_usec,u64 & Not Found & No & - \\
+\end{tabular}
+}
+\cleardoublepage
+
 
 \subsection{MISSION\_REQUEST\_INT 51} 
 Request the information of the mission item with the sequence number seq. The response of the system to this message should be a MISSION\_ITEM\_INT message. \\
@@ -159,6 +230,56 @@ mission\_type,u8 & Not Found & No & - \\
 }
 \cleardoublepage
 
+
+
+
+\subsection{NAV\_CONTROLLER\_OUTPUT 62}
+The state of the fixed wing navigation and position controller. \\
+{\rowcolors{2}{yellow}{yellow}
+\centering
+\begin{tabular}{ |p{4cm  } |p{7cm} | p{2cm}|m{5em}|}
+\hline
+Mavlink Message Field(Name,type)&Corresponding MSP Message(Name,id,data,type)& Compatibility & Notes\\
+\hline
+nav\_roll,f & Not Found & No & - \\
+\hline
+nav\_pitch,f & Not Found & No & - \\
+\hline
+nav\_bearing,i16 & Not Found & No & - \\
+\hline
+\rowcolor{green}
+target\_bearing,i16 & MSP\_NAV\_STATUS,-,target\_bearing,i16 & Yes & - \\
+\hline
+wp\_dist,u16 & Not Found & No & - \\
+\hline
+alt\_error,f & Not Found & No & - \\
+\hline
+aspd\_error,f & Not Found & No & - \\
+\hline
+xtrack\_error,f & Not Found & No & - \\
+\end{tabular}
+}
+\cleardoublepage
+
+
+
+\subsection{RC\_CHANNELS\_OVERRIDE 70} 
+The RAW values of the RC channels sent to the MAV to override info received from the RC radio. A value of UINT16\_MAX means no change to that channel. A value of 0 means control of that channel should be released back to the RC radio. The standard PPM modulation is as follows: 1000 microseconds: 0\%, 2000 microseconds: 100\%. Individual receivers/transmitters might violate this specification.\\
+
+{\rowcolors{2}{yellow}{yellow}
+\centering
+\begin{tabular}{ |p{4cm  } |p{7cm} | p{2cm}|m{5em}|}
+\hline
+Mavlink Message Field(Name,type)&Corresponding MSP Message(Name,id,data,type)& Compatibility & Notes\\
+\hline
+target\_system,u8 & Not Found & No & - \\
+\hline
+\rowcolor{green}
+chan1\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS], [u16;16]& Yes & - \\
+\end{tabular}
+}
+
+\cleardoublepage
 
 
 
@@ -214,24 +335,4 @@ mission\_type &  Not Found & No & - \\
 
 
 
-
-
-
-\subsection{RC\_CHANNELS\_OVERRIDE 70} 
-The RAW values of the RC channels sent to the MAV to override info received from the RC radio. A value of UINT16\_MAX means no change to that channel. A value of 0 means control of that channel should be released back to the RC radio. The standard PPM modulation is as follows: 1000 microseconds: 0\%, 2000 microseconds: 100\%. Individual receivers/transmitters might violate this specification.\\
-
-{\rowcolors{2}{yellow}{yellow}
-\centering
-\begin{tabular}{ |p{4cm  } |p{7cm} | p{2cm}|m{5em}|}
-\hline
-Mavlink Message Field(Name,type)&Corresponding MSP Message(Name,id,data,type)& Compatibility & Notes\\
-\hline
-target\_system,u8 & Not Found & No & - \\
-\hline
-\rowcolor{green}
-chan1\_raw,u16 & MSP\_RC,105,rcData[RC\_CHANS], [u16;16]& Yes & - \\
-\end{tabular}
-}
-
-\cleardoublepage
 

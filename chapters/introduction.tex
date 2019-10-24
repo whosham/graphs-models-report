@@ -29,9 +29,12 @@ The flight controller software is a compiled code that uploaded to the autopilot
 
 
 
-\section{Mavlink Message Structure}
+\section{Mavlink Protocol}
 
-
+Mavlink is a communication protocol which allows drones to communicate with ground stations. 
+In other word it  facilitates exchanging messages between vehicles such as drones and ground station For instance monitoring the position or performing more actions.
+Mavlink was released early 2009 by Lorenz Meier under LGPL. \\ 
+ 
 Each Mavlink message consists of 6 bytes for the header and 9 bytes for the payload and 2 bytes for the checksum for verifying the message integrity and assuring that the message wasn’t altered during the transmission. The header contains a packet start sign encoded into one byte which indicates the starting of the packet.
 \begin{itemize}
   \item Each message starts with 0xFE indicates the starting of a new message.
